@@ -1,0 +1,22 @@
+NOMENCLATURE:
+
+Classes  --->  MyClass (camelcase)
+Name of each agent  --->  My Agent  (capital letters and spaces)
+Agent type   --->  My_Agent  (capital letters + underscores)
+
+
+agent_list_position is a list with the 3 spatial coordinates (tuple)
+
+
+CLASSES
+Agents structure:
+agent
+    |
+    mother_boat
+    |
+    worker
+        |
+        drone
+        |
+        vessel
+
