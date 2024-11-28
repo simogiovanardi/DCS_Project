@@ -4,8 +4,8 @@ import json
 
 class Drone(Worker):
     # Mother_boat class
-    def __init__(self, agent_list_position):
+    def __init__(self, agent_list_position, number):
         # By default, the mother boat is called "Mother Boat"
-        super().__init__("Drone", "Drone", agent_list_position)
+        super().__init__(f"Drone{number}", "Drone", agent_list_position)
 
 

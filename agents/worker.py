@@ -19,8 +19,3 @@ class Worker(Agent):
         }
 
         return json.dumps(description_dict)
-
-    def update_position(self, new_position):
-        self.agent_list_position[0] = new_position[0],
-        self.agent_list_position[1] = new_position[1],
-        self.agent_list_position[2] = new_position[2]

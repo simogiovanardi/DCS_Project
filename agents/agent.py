@@ -1,4 +1,7 @@
 import json
+from functions.move_to import move_to
+from functions.positions_plot import x_y_positions_plot
+
 
 #TODO: fix the agent_list_position to be a 3 element tuple
 class Agent:
@@ -28,4 +31,20 @@ class Agent:
 
         return json.dumps(position_dict)
 
+    def update_position(self, agent_list_new_position):
+        self.initial_position = self.agent_list_position # initialize and keep the initial position before the move_to function is called
+
+        # generate the segmentation of the path between start position and goal position
+        self.path_segmentation_positions = move_to(self.agent_name, 
+        self.initial_position[0], self.initial_position[1], self.initial_position[2],
+        agent_list_new_position[0], agent_list_new_position[1], agent_list_new_position[2])
+
+        # assign each single component of the generated segmentation to the actual position of the agent
+        for row in self.path_segmentation_positions:
+                self.agent_list_position[0] = row[0]
+                self.agent_list_position[1] = row[1]
+                self.agent_list_position[2] = row[2]
+                x_y_positions_plot(self.agent_name, self.agent_list_position[0], self.agent_list_position[1])
+
+                 
     # TODO: is the orientation needed?
