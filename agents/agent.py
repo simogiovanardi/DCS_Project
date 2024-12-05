@@ -1,7 +1,10 @@
 import json
 from functions.move_to import move_to
-from functions.positions_plot import x_y_positions_plot
+from functions.positions_plot import update_plot, initialize_plot
 
+agent_positions = dict() # Initialization of the dictionary that is going to contain agents names and positions
+agent_types = dict() # Initialization of the dictionary that is storing the agents names and the type
+fig, ax, artists = initialize_plot(xlim = (-10, 10), ylim = (-10,10))
 
 #TODO: fix the agent_list_position to be a 3 element tuple
 class Agent:
@@ -10,6 +13,9 @@ class Agent:
         self.agent_name = agent_name
         self.agent_type = agent_type
         self.agent_list_position = agent_list_position
+        agent_positions[self.agent_name] = (self.agent_list_position[0], self.agent_list_position[1])
+        # this last row appends the agent name as a key and its position as a value in the agent_positions dictionary
+        agent_types[self.agent_name] = self.agent_type
 
     def get_json_agent_description(self):
         # returns a json of the agent information
@@ -44,7 +50,9 @@ class Agent:
                 self.agent_list_position[0] = row[0]
                 self.agent_list_position[1] = row[1]
                 self.agent_list_position[2] = row[2]
-                x_y_positions_plot(self.agent_name, self.agent_list_position[0], self.agent_list_position[1])
+                # update the dictionary with the new position:
+                # agent_positions[self.agent_name] = (self.agent_list_position[0], self.agent_list_position[1]) 
+                # update_plot(agent_positions, ax, artists, agent_types)
 
                  
     # TODO: is the orientation needed?

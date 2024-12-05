@@ -3,10 +3,10 @@ import json
 
 
 class Vessel(Worker):
-    # Mother_boat class
-    def __init__(self, agent_list_position):
+    # Vessel class
+    def __init__(self, agent_list_position, number):
         # By default, the mother boat is called "Mother Boat"
-        super().__init__("Vessel", "Vessel", agent_list_position)
+        super().__init__(f"Vessel{number}", "Vessel", agent_list_position)
 
         self.payload = 0  # Initially the boat is empty (no garbage in it)
 

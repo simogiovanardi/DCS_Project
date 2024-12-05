@@ -2,40 +2,62 @@ import matplotlib.pyplot as plt
 import time
 
 
-def x_y_positions_plot(name, x_position, y_position):
-    # Plot the current position and target
 
-    ''' 
-    plt.scatter(x_position, y_position, color="blue", label = name, marker = 'X')
-    plt.title("Agent")
-    plt.xlabel("X Coordinate")
-    plt.ylabel("Y Coordinate")
-    plt.grid(True)
-    plt.legend()
-    # Set fixed axis limits
-    plt.xlim(-10, 10)
-    plt.ylim(-10, 10)
-    plt.pause(0.05)  # Pause for live plot update
-    plt.show()
-    '''
 
-    # Create the figure and axes
+# Function to initialize the plot
+def initialize_plot(xlim, ylim):
+    """Initializes the plot and returns the figure, axes, and artists for agents."""
+    plt.ion()
     fig, ax = plt.subplots()
+    ax.set_xlim(xlim)
+    ax.set_ylim(ylim)
+    ax.set_title("Agent Trajectory")
+    plt.show()
+    
+    # Create a dictionary to store scatter plot objects for each agent
+    agents = {}
+    
+    return fig, ax, agents
 
-    # Set plot limits (adjust to match your data range)
-    ax.set_xlim(-10, 10)
-    ax.set_ylim(-10, 10)
+# Function to get the marker style and color for each agent type
+def get_agent_style(agent_type):
+    """Returns the marker style and color for the given agent type."""
+    styles = {
+        'Drone': {'marker': 'X', 'color': 'blue'},
+        'Vessel': {'marker': '^', 'color': 'green'},
+        'Mother boat': {'marker': 's', 'color': 'red'},
+    }
+    return styles.get(agent_type, {'marker': 'x', 'color': 'black'})  # Default is black 'x'
 
-    # Initialize the scatter plot
-    point, = ax.plot([], [], 'X', color='blue')  # Single point
 
-    point.set_data(x_position, y_position)
-
+def update_plot(agents_positions, ax, artists, agent_types):
+    """
+    :param agents_positions: Dictionary of agent names and their (x, y) positions.
+    :param ax: Axes object of the plot.
+    :param artists: Dictionary to track scatter plot objects for each agent.
+    :param agent_types: Dictionary of agent types (e.g., 'drone', 'vessel').
+    """
+    for agent, position in agents_positions.items():
+        # Get the agent type (drone, vessel, etc.)
+        agent_type = agent_types.get(agent, 'unknown')  # Default type is 'unknown'
+        
+        # Get the marker style and color for this agent type
+        style = get_agent_style(agent_type)
+        
+        if agent in artists:
+            # Update the position of the existing agent
+            artists[agent].set_offsets([position])
+        else:
+            # Add a new scatter plot for a new agent with the correct marker and color
+            artists[agent] = ax.scatter(*position, label=agent, marker=style['marker'], color=style['color'])
+    
+    # Refresh the legend if new agents were added
+    ax.legend()
+    
     # Redraw the plot
     plt.draw()
-    plt.pause(0.5)  # Pause to simulate motion (adjust duration as needed)
+    plt.pause(0.1)
 
-    # Keep the final plot visible
-    plt.show()
+
 
 
