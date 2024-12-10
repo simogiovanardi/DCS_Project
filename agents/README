@@ -14,9 +14,7 @@ agent
     |
     mother_boat
     |
-    worker
-        |
-        drone
-        |
-        vessel
+    drone
+    |
+    vessel
 

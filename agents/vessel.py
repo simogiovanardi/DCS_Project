@@ -1,15 +1,14 @@
-from agents.worker import Worker
+from agents import Agent
 import json
 
 
-class Vessel(Worker):
+class Vessel(Agent):
     # Vessel class
     def __init__(self, agent_list_position, number):
-        # By default, the mother boat is called "Mother Boat"
         super().__init__(f"Vessel{number}", "Vessel", agent_list_position)
-
         self.payload = 0  # Initially the boat is empty (no garbage in it)
-
+        self.battery = 100,  # Initially the battery in fully charged
+    
     def get_json_agent_description(self):
         # override the agent method for the information
         description_dict = {
