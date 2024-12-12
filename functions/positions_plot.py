@@ -4,8 +4,8 @@ import time
 # Function to initialize the plot
 def initialize_plot():
     """Initializes the plot and returns the figure, axes, and artists for agents."""
-    xlim=(-1, 1) 
-    ylim=(-1, 1)
+    xlim=(-10, 10) 
+    ylim=(-10, 10)
     plt.ion()
     fig, ax = plt.subplots()
     ax.set_xlim(xlim)

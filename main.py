@@ -17,7 +17,8 @@ for i in waypoints_fleet1.move_drones(updated_positions, 1)
                 for drone in self.n_drones:
 """
 
-fleet = DronesFleet(n_drones=5)
+n_drones=5
+fleet = DronesFleet(n_drones)
 
 # Define waypoints for the centroid
 cols = 10
@@ -33,10 +34,12 @@ for col in range(cols):
 
 # Define desired distances (pentagon edges)
 size = 5  # Size of the matrix
-desired_distances = [[0 if row == col else 1 for col in range(size)] for row in range(size)]
+desired_distance = 2
+desired_distances = np.full((n_drones, n_drones), desired_distance)
+np.fill_diagonal(desired_distances, 0)  # Distance to itself is zero
 
 R = 10  # Interaction range
-fleet.formation_with_waypoints(waypoints_list, desired_distances, R, learning_rate=0.05, steps_per_waypoint=100)
+fleet.formation_with_waypoints(waypoints_list, desired_distances, R, learning_rate=0.05, steps_per_waypoint=5)
 plt.show()
 
 

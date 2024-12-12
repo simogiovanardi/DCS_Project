@@ -5,8 +5,8 @@ import numpy as np
 
 class DronesFleet:
     def __init__(self, n_drones):
-        spawning_position = [-2, 2, 0]
-        self.drones = [Drone(spawning_position, i+1) for i in range(n_drones)] # gives a name to each drone (i+1 since it starts from zero)
+        spawning_positions = [[-5 + i * 2, 0, 0] for i in range(n_drones)]
+        self.drones = [Drone(spawning_positions[i], i + 1) for i in range(n_drones)]
         self.n_drones = n_drones
 
         # Initialize visualization for the fleet
@@ -63,7 +63,7 @@ class DronesFleet:
         return all_positions_over_time
     
 
-    def formation_with_waypoints(self, waypoints_list, desired_distances, R, learning_rate=0.01, steps_per_waypoint=100):
+    def formation_with_waypoints(self, waypoints_list, desired_distances, R, learning_rate=0.1, steps_per_waypoint=50):
         """
         Move the fleet in formation while the centroid follows waypoints.
 
@@ -78,14 +78,19 @@ class DronesFleet:
             centroid = np.mean([drone.agent_position for drone in self.drones], axis=0)
             shift = np.array(waypoint) - centroid
 
-            # Shift the formation towards the waypoint
-            for drone in self.drones:
-                drone.agent_position += shift
+            # Shift the formation towards the waypoint incrementally
+            shift_steps = steps_per_waypoint
+            shift_increment = shift / shift_steps
 
-            # Perform formation control to maintain structure
-            self.control_formation(desired_distances, R, learning_rate, steps_per_waypoint)
+            for step in range(shift_steps):
+                # Move each drone slightly towards the waypoint
+                for drone in self.drones:
+                    drone.agent_position += shift_increment
 
-    
+                # Perform formation control to maintain structure
+                self.control_formation(desired_distances, R, learning_rate, 1)
+
+        
 
 
 
@@ -111,7 +116,7 @@ class DronesFleet:
 
 
 
-    def control_formation(self, desired_distances, R, learning_rate=0.01, steps=100):
+    def control_formation(self, desired_distances, R, learning_rate=0.1, steps=50):
         """
         Perform formation control using the formation + connectivity approach.
 
@@ -131,32 +136,22 @@ class DronesFleet:
             position_updates = np.zeros((self.n_drones, 3))
 
             for i in range(self.n_drones):
+                xi = np.array(self.drones[i].agent_position)
                 for j in range(self.n_drones):
                     if i == j:
                         continue
-                    xi = np.array(self.drones[i].agent_position)
                     xj = np.array(self.drones[j].agent_position)
                     dij = desired_distances[i][j]
-                    
+
                     # Compute distance
-                    distance = np.linalg.norm(xi - xj)
-                    
-                    # If drones are too close or too far, skip the interaction
-                    if distance == 0 or distance >= R:
-                        continue
+                    distance = np.linalg.norm(xi - xj) + eps
+                    direction = (xi - xj) / distance
 
-                    # Compute interaction weight
-                    weight = self.compute_weight(xi[:2], xj[:2], dij, R)
-
-                    if weight != 0:
-                        # Avoid division by zero using epsilon during direction normalization
-                        direction = (xi - xj) / (distance + eps)
-                        
-                        # Compute gradient of potential energy
-                        gradient = weight * (dij - distance) * direction
-
-                        # Update position increment for drone i
-                        position_updates[i] += learning_rate * gradient
+                    # Only consider neighbors within the interaction range R
+                    if distance <= R:
+                        # Gradient for formation control (includes repulsion when too close)
+                        gradient = (distance - dij) * direction
+                        position_updates[i] -= learning_rate * gradient  # Negative sign for gradient descent
 
             # Update the positions of all drones
             for i in range(self.n_drones):
@@ -165,6 +160,4 @@ class DronesFleet:
             # Visualize the current positions
             agents_positions = {drone.agent_name: (drone.agent_position[0], drone.agent_position[1]) for drone in self.drones}
             update_plot(agents_positions, self.ax, self.artists, self.agent_types)
-
-            # Pause for visualization during simulation
             plt.pause(0.1)
