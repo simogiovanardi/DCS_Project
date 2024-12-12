@@ -1,14 +1,11 @@
 import matplotlib.pyplot as plt
 import time
 
-
-
-
 # Function to initialize the plot
 def initialize_plot():
     """Initializes the plot and returns the figure, axes, and artists for agents."""
-    xlim=(-10, 10) 
-    ylim=(-10, 10)
+    xlim=(-1, 1) 
+    ylim=(-1, 1)
     plt.ion()
     fig, ax = plt.subplots()
     ax.set_xlim(xlim)
@@ -60,8 +57,3 @@ def update_plot(agents_positions, ax, artists, agent_types):
     
     # Redraw the plot
     plt.draw()
-
-
-
-
-

@@ -22,7 +22,7 @@ class Agent:
         }
         return json.dumps(position_dict)
 
-    def move_to(self, new_position, velocity=10):
+    def move_to(self, new_position, velocity=1):
         self.initial_position = self.agent_position.copy()
         self.path_segmentation_positions = move_to(
             self.initial_position[0], self.initial_position[1], self.initial_position[2],

@@ -1,4 +1,4 @@
-from coppeliasim_zmqremoteapi_client import RemoteAPIClient
+"""from coppeliasim_zmqremoteapi_client import RemoteAPIClient
 from functions.move_to import move_to
 import time
 
@@ -28,7 +28,7 @@ start_time = sim.getSimulationTime()
 
 for waypoint in waypoints:
     x, y, z, t = waypoint
-
+print(list + (i*0.1) for i in range(5))
     # Wait until it's time to move to the next waypoint
     while sim.getSimulationTime() - start_time < t:
         time.sleep(0.01)  # Sleep briefly to avoid busy waiting
@@ -38,4 +38,19 @@ for waypoint in waypoints:
 
 # Optionally, stop the simulation after movement is complete
 
-sim.stopSimulation()
+sim.stopSimulation()"""
+
+"""list = [1,2,3]
+list_2 = list.copy()
+for i in range(len(list_2)):
+    list_2[i] = list_2[i] +1
+
+print(list)
+print(list_2)
+# print(list + (i*0.1) for i in range(5))
+"""
+
+spawning_position = [-2, 2, 0]
+
+new_spawn_positions = [spawning_position[j]+(0.1*i) for i in range(5) for j in range(len(spawning_position))]
+print(new_spawn_positions)
