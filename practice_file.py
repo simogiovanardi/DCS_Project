@@ -48,9 +48,36 @@ for i in range(len(list_2)):
 print(list)
 print(list_2)
 # print(list + (i*0.1) for i in range(5))
-"""
+
 
 spawning_position = [-2, 2, 0]
 
 new_spawn_positions = [spawning_position[j]+(0.1*i) for i in range(5) for j in range(len(spawning_position))]
 print(new_spawn_positions)
+"""
+
+
+
+
+def generate_zigzag(rows, cols):
+    zigzag_path = []
+    for col in range(cols):
+        if col % 2 == 0:  # Even column: top-to-bottom
+            for row in range(rows):
+                zigzag_path.append([row, col])
+        else:  # Odd column: bottom-to-top
+            for row in range(rows - 1, -1, -1):
+                zigzag_path.append([row, col])
+    return zigzag_path
+
+# Parameters
+rows = 10
+cols = 10
+
+# Generate the zigzag path
+zigzag_points = generate_zigzag(rows, cols)
+
+# Print the zigzag path
+print("Zigzag Path:")
+for point in zigzag_points:
+    print(point)
