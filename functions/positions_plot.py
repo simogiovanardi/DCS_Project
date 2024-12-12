@@ -5,13 +5,17 @@ import time
 
 
 # Function to initialize the plot
-def initialize_plot(xlim, ylim):
+def initialize_plot():
     """Initializes the plot and returns the figure, axes, and artists for agents."""
+    xlim=(-10, 10) 
+    ylim=(-10, 10)
     plt.ion()
     fig, ax = plt.subplots()
     ax.set_xlim(xlim)
     ax.set_ylim(ylim)
     ax.set_title("Agent Trajectory")
+    ax.set_xlabel("X Position")
+    ax.set_ylabel("Y Position")
     plt.show()
     
     # Create a dictionary to store scatter plot objects for each agent
@@ -56,7 +60,7 @@ def update_plot(agents_positions, ax, artists, agent_types):
     
     # Redraw the plot
     plt.draw()
-    plt.pause(0.1)
+
 
 
 

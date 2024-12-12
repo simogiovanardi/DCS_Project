@@ -49,5 +49,6 @@ def move_to(actual_X, actual_Y, actual_Z, new_X, new_Y, new_Z, velocity):
         z = actual_Z + i * z_step
         t = i * dt_adjusted
         steps.append((round(x, 2), round(y, 2), round(z, 2), round(t, 3)))  # Use round(t, 3) for milliseconds precision
+        print(x,y,z,t)
 
     return steps
